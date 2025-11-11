@@ -8,7 +8,7 @@ import org.mapstruct.Mapping;
 
 import co.edu.uco.backendvictus.application.dto.departamento.DepartamentoCreateRequest;
 import co.edu.uco.backendvictus.application.dto.departamento.DepartamentoResponse;
-import co.edu.uco.backendvictus.application.dto.departamento.DepartamentoUpdateRequest;
+import co.edu.uco.backendvictus.application.dto.departamento.DepartamentoUpdateCommand;
 import co.edu.uco.backendvictus.domain.model.Departamento;
 import co.edu.uco.backendvictus.domain.model.Pais;
 
@@ -19,8 +19,8 @@ public abstract class DepartamentoApplicationMapper {
         return Departamento.create(id, request.nombre(), pais, request.activo());
     }
 
-    public Departamento toDomain(final DepartamentoUpdateRequest request, final Pais pais) {
-        return Departamento.create(request.id(), request.nombre(), pais, request.activo());
+    public Departamento toDomain(final DepartamentoUpdateCommand command, final Pais pais) {
+        return Departamento.create(command.id(), command.nombre(), pais, command.activo());
     }
 
     @Mapping(target = "paisId", source = "pais.id")

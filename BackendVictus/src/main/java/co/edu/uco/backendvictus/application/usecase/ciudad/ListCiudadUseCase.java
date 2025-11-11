@@ -1,12 +1,12 @@
 package co.edu.uco.backendvictus.application.usecase.ciudad;
 
-import java.util.List;
-
 import org.springframework.stereotype.Service;
 
 import co.edu.uco.backendvictus.application.dto.ciudad.CiudadResponse;
 import co.edu.uco.backendvictus.application.mapper.CiudadApplicationMapper;
+import co.edu.uco.backendvictus.domain.model.filter.CiudadFilter;
 import co.edu.uco.backendvictus.domain.port.CiudadRepository;
+import reactor.core.publisher.Flux;
 
 @Service
 public class ListCiudadUseCase {
@@ -19,7 +19,11 @@ public class ListCiudadUseCase {
         this.mapper = mapper;
     }
 
-    public List<CiudadResponse> execute() {
-        return mapper.toResponseList(ciudadRepository.findAll());
+    public Flux<CiudadResponse> execute() {
+        return execute(CiudadFilter.empty());
+    }
+
+    public Flux<CiudadResponse> execute(final CiudadFilter filter) {
+        return ciudadRepository.findAll(filter).map(mapper::toResponse);
     }
 }

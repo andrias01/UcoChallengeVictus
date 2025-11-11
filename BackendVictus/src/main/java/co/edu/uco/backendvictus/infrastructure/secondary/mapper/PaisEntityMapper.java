@@ -3,14 +3,14 @@ package co.edu.uco.backendvictus.infrastructure.secondary.mapper;
 import org.mapstruct.Mapper;
 
 import co.edu.uco.backendvictus.domain.model.Pais;
-import co.edu.uco.backendvictus.infrastructure.secondary.entity.PaisJpaEntity;
+import co.edu.uco.backendvictus.infrastructure.secondary.entity.PaisEntity;
 
 @Mapper(componentModel = "spring")
-public abstract class PaisEntityMapper {
+public interface PaisEntityMapper {
 
-    public abstract PaisJpaEntity toEntity(Pais pais);
+    PaisEntity toEntity(Pais pais);
 
-    public Pais toDomain(final PaisJpaEntity entity) {
+    default Pais toDomain(final PaisEntity entity) {
         if (entity == null) {
             return null;
         }

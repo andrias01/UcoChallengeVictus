@@ -8,7 +8,7 @@ import org.mapstruct.Mapping;
 
 import co.edu.uco.backendvictus.application.dto.ciudad.CiudadCreateRequest;
 import co.edu.uco.backendvictus.application.dto.ciudad.CiudadResponse;
-import co.edu.uco.backendvictus.application.dto.ciudad.CiudadUpdateRequest;
+import co.edu.uco.backendvictus.application.dto.ciudad.CiudadUpdateCommand;
 import co.edu.uco.backendvictus.domain.model.Ciudad;
 import co.edu.uco.backendvictus.domain.model.Departamento;
 
@@ -19,8 +19,8 @@ public abstract class CiudadApplicationMapper {
         return Ciudad.create(id, request.nombre(), departamento, request.activo());
     }
 
-    public Ciudad toDomain(final CiudadUpdateRequest request, final Departamento departamento) {
-        return Ciudad.create(request.id(), request.nombre(), departamento, request.activo());
+    public Ciudad toDomain(final CiudadUpdateCommand command, final Departamento departamento) {
+        return Ciudad.create(command.id(), command.nombre(), departamento, command.activo());
     }
 
     @Mapping(target = "departamentoId", source = "departamento.id")

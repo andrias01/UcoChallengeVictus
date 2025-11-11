@@ -1,18 +1,29 @@
 package co.edu.uco.backendvictus.domain.port;
 
-import java.util.List;
-import java.util.Optional;
 import java.util.UUID;
 
 import co.edu.uco.backendvictus.domain.model.Pais;
+import co.edu.uco.backendvictus.domain.model.filter.PaisFilter;
+import co.edu.uco.backendvictus.domain.specification.Specification;
+import co.edu.uco.backendvictus.domain.specification.pais.PaisSpecifications;
+import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 
 public interface PaisRepository {
 
-    Pais save(Pais pais);
+    Mono<Pais> save(Pais pais);
 
-    Optional<Pais> findById(UUID id);
+    Mono<Pais> findById(UUID id);
 
-    List<Pais> findAll();
+    Mono<Pais> findByNombreIgnoreCase(String nombre);
 
-    void deleteById(UUID id);
+    Flux<Pais> findAll();
+
+    Flux<Pais> findAll(Specification<Pais> specification);
+
+    Mono<Void> deleteById(UUID id);
+
+    default Flux<Pais> findAll(final PaisFilter filter) {
+        return findAll(PaisSpecifications.matchFilter(filter));
+    }
 }

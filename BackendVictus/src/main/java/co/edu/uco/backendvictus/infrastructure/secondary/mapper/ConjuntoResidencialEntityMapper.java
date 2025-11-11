@@ -2,32 +2,24 @@ package co.edu.uco.backendvictus.infrastructure.secondary.mapper;
 
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import co.edu.uco.backendvictus.domain.model.Administrador;
 import co.edu.uco.backendvictus.domain.model.Ciudad;
 import co.edu.uco.backendvictus.domain.model.ConjuntoResidencial;
-import co.edu.uco.backendvictus.infrastructure.secondary.entity.ConjuntoResidencialJpaEntity;
+import co.edu.uco.backendvictus.infrastructure.secondary.entity.ConjuntoResidencialEntity;
 
-@Mapper(componentModel = "spring", uses = {CiudadEntityMapper.class, AdministradorEntityMapper.class})
-public abstract class ConjuntoResidencialEntityMapper {
+@Mapper(componentModel = "spring")
+public interface ConjuntoResidencialEntityMapper {
 
-    @Autowired
-    private CiudadEntityMapper ciudadEntityMapper;
+    @Mapping(target = "ciudadId", source = "ciudad.id")
+    @Mapping(target = "administradorId", source = "administrador.id")
+    ConjuntoResidencialEntity toEntity(ConjuntoResidencial conjuntoResidencial);
 
-    @Autowired
-    private AdministradorEntityMapper administradorEntityMapper;
-
-    @Mapping(target = "ciudad", source = "ciudad")
-    @Mapping(target = "administrador", source = "administrador")
-    public abstract ConjuntoResidencialJpaEntity toEntity(ConjuntoResidencial conjuntoResidencial);
-
-    public ConjuntoResidencial toDomain(final ConjuntoResidencialJpaEntity entity) {
-        if (entity == null) {
+    default ConjuntoResidencial toDomain(final ConjuntoResidencialEntity entity, final Ciudad ciudad,
+            final Administrador administrador) {
+        if (entity == null || ciudad == null || administrador == null) {
             return null;
         }
-        final Ciudad ciudad = ciudadEntityMapper.toDomain(entity.getCiudad());
-        final Administrador administrador = administradorEntityMapper.toDomain(entity.getAdministrador());
         return ConjuntoResidencial.create(entity.getId(), entity.getNombre(), entity.getDireccion(), ciudad,
                 administrador, entity.isActivo());
     }

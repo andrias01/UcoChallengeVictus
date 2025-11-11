@@ -1,8 +1,6 @@
 package co.edu.uco.backendvictus.crosscutting.helpers;
 
-import java.util.Objects;
 import java.util.UUID;
-import java.util.regex.Pattern;
 
 import co.edu.uco.backendvictus.crosscutting.exception.DomainException;
 
@@ -11,45 +9,44 @@ import co.edu.uco.backendvictus.crosscutting.exception.DomainException;
  */
 public final class ValidationUtils {
 
-    private static final Pattern EMAIL_PATTERN = Pattern.compile(
-            "^[A-Z0-9._%+-]+@[A-Z0-9.-]+\\.[A-Z]{2,}$", Pattern.CASE_INSENSITIVE);
-
     private ValidationUtils() {
         // Utility class
     }
 
     public static UUID validateUUID(final UUID id, final String fieldName) {
-        if (Objects.isNull(id)) {
-            throw new DomainException(fieldName + " no puede ser nulo");
+        if (ObjectHelper.isNull(id) || UUIDHelper.isDefault(id)) {
+            throw new DomainException(fieldName + " no puede ser nulo", fieldName + " no puede ser nulo");
         }
         return id;
     }
 
     public static String validateRequiredText(final String value, final String fieldName, final int maxLength) {
-        final String sanitized = DataSanitizer.sanitizeText(value);
-        if (sanitized == null || sanitized.isBlank()) {
-            throw new DomainException(fieldName + " es requerido");
+        final String sanitized = TextHelper.sanitize(value);
+        if (TextHelper.isNull(sanitized) || TextHelper.isEmptyAfterTrim(sanitized)) {
+            throw new DomainException(fieldName + " es requerido", fieldName + " es requerido");
         }
-        if (sanitized.length() > maxLength) {
-            throw new DomainException(fieldName + " supera la longitud maxima de " + maxLength);
+        if (TextHelper.length(sanitized) > maxLength) {
+            throw new DomainException(fieldName + " supera la longitud maxima de " + maxLength,
+                    fieldName + " supera la longitud maxima de " + maxLength);
         }
         return sanitized;
     }
 
     public static String validateOptionalText(final String value, final String fieldName, final int maxLength) {
-        final String sanitized = DataSanitizer.sanitizeText(value);
-        if (sanitized != null && sanitized.length() > maxLength) {
-            throw new DomainException(fieldName + " supera la longitud maxima de " + maxLength);
+        final String sanitized = TextHelper.sanitize(value);
+        if (!TextHelper.isNull(sanitized) && TextHelper.length(sanitized) > maxLength) {
+            throw new DomainException(fieldName + " supera la longitud maxima de " + maxLength,
+                    fieldName + " supera la longitud maxima de " + maxLength);
         }
         return sanitized;
     }
 
     public static String validateEmail(final String value) {
-        final String sanitized = DataSanitizer.sanitizeText(value);
-        if (sanitized == null || sanitized.isBlank()) {
+        final String sanitized = TextHelper.sanitize(value);
+        if (TextHelper.isNull(sanitized) || TextHelper.isEmptyAfterTrim(sanitized)) {
             throw new DomainException("El correo electronico es requerido");
         }
-        if (!EMAIL_PATTERN.matcher(sanitized).matches()) {
+        if (!PatternHelper.EMAIL.matcher(sanitized).matches()) {
             throw new DomainException("El correo electronico no es valido");
         }
         return sanitized;

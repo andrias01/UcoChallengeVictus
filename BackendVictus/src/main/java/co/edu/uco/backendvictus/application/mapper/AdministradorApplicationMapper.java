@@ -7,7 +7,7 @@ import org.mapstruct.Mapper;
 
 import co.edu.uco.backendvictus.application.dto.administrador.AdministradorCreateRequest;
 import co.edu.uco.backendvictus.application.dto.administrador.AdministradorResponse;
-import co.edu.uco.backendvictus.application.dto.administrador.AdministradorUpdateRequest;
+import co.edu.uco.backendvictus.application.dto.administrador.AdministradorUpdateCommand;
 import co.edu.uco.backendvictus.domain.model.Administrador;
 
 @Mapper(componentModel = "spring")
@@ -18,10 +18,10 @@ public abstract class AdministradorApplicationMapper {
                 request.segundoApellido(), request.email(), request.telefono(), request.activo());
     }
 
-    public Administrador toDomain(final AdministradorUpdateRequest request) {
-        return Administrador.create(request.id(), request.primerNombre(), request.segundoNombres(),
-                request.primerApellido(), request.segundoApellido(), request.email(), request.telefono(),
-                request.activo());
+    public Administrador toDomain(final AdministradorUpdateCommand command) {
+        return Administrador.create(command.id(), command.primerNombre(), command.segundoNombres(),
+                command.primerApellido(), command.segundoApellido(), command.email(), command.telefono(),
+                command.activo());
     }
 
     public abstract AdministradorResponse toResponse(Administrador administrador);

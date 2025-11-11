@@ -27,7 +27,7 @@ public final class Administrador {
         this.primerApellido = ValidationUtils.validateRequiredText(primerApellido, "Primer apellido", 60);
         this.segundoApellido = ValidationUtils.validateOptionalText(segundoApellido, "Segundo apellido", 60);
         this.email = ValidationUtils.validateEmail(email);
-        this.telefono = ValidationUtils.validateOptionalText(telefono, "Telefono", 20);
+        this.telefono = ValidationUtils.validateRequiredText(telefono, "Telefono", 20);
         this.activo = activo;
     }
 

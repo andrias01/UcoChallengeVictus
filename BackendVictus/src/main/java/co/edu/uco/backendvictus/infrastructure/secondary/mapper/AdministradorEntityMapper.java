@@ -3,14 +3,14 @@ package co.edu.uco.backendvictus.infrastructure.secondary.mapper;
 import org.mapstruct.Mapper;
 
 import co.edu.uco.backendvictus.domain.model.Administrador;
-import co.edu.uco.backendvictus.infrastructure.secondary.entity.AdministradorJpaEntity;
+import co.edu.uco.backendvictus.infrastructure.secondary.entity.AdministradorEntity;
 
 @Mapper(componentModel = "spring")
-public abstract class AdministradorEntityMapper {
+public interface AdministradorEntityMapper {
 
-    public abstract AdministradorJpaEntity toEntity(Administrador administrador);
+    AdministradorEntity toEntity(Administrador administrador);
 
-    public Administrador toDomain(final AdministradorJpaEntity entity) {
+    default Administrador toDomain(final AdministradorEntity entity) {
         if (entity == null) {
             return null;
         }

@@ -1,12 +1,12 @@
 package co.edu.uco.backendvictus.application.usecase.conjunto;
 
-import java.util.List;
-
 import org.springframework.stereotype.Service;
 
 import co.edu.uco.backendvictus.application.dto.conjunto.ConjuntoResponse;
 import co.edu.uco.backendvictus.application.mapper.ConjuntoApplicationMapper;
+import co.edu.uco.backendvictus.domain.model.filter.ConjuntoResidencialFilter;
 import co.edu.uco.backendvictus.domain.port.ConjuntoResidencialRepository;
+import reactor.core.publisher.Flux;
 
 @Service
 public class ListConjuntoUseCase {
@@ -20,7 +20,11 @@ public class ListConjuntoUseCase {
         this.mapper = mapper;
     }
 
-    public List<ConjuntoResponse> execute() {
-        return mapper.toResponseList(conjuntoRepository.findAll());
+    public Flux<ConjuntoResponse> execute() {
+        return execute(ConjuntoResidencialFilter.empty());
+    }
+
+    public Flux<ConjuntoResponse> execute(final ConjuntoResidencialFilter filter) {
+        return conjuntoRepository.findAll(filter).map(mapper::toResponse);
     }
 }

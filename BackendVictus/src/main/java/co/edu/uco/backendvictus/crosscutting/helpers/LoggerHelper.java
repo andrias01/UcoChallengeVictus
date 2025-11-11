@@ -15,4 +15,20 @@ public final class LoggerHelper {
     public static Logger getLogger(final Class<?> source) {
         return LoggerFactory.getLogger(source);
     }
+
+    public static void info(final Class<?> source, final String message, final Object... arguments) {
+        getLogger(source).info(message, arguments);
+    }
+
+    public static void warn(final Class<?> source, final String message, final Object... arguments) {
+        getLogger(source).warn(message, arguments);
+    }
+
+    public static void debug(final Class<?> source, final String message, final Object... arguments) {
+        getLogger(source).debug(message, arguments);
+    }
+
+    public static void error(final Class<?> source, final String message, final Object... arguments) {
+        getLogger(source).error(message, arguments);
+    }
 }

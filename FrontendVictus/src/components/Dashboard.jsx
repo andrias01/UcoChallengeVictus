@@ -23,7 +23,7 @@ function AdminDashboard() {
         
         if (currentAdmin) {
             const admin = JSON.parse(currentAdmin);
-            setAdminName(`${admin.name} ${admin.lastName}`);
+            setAdminName(`${admin.firstName} `);
         } else {
             // Si no hay admin autenticado, redirigir al login
             navigate("/loginAdmin");
@@ -41,9 +41,9 @@ function AdminDashboard() {
             <div className="admin-dashboard">
                 <header className="admin-topbar">
                     <h2 className="adminNameTittle">Hola, <span>{adminName || "Administrador"}</span></h2>
-                    <button className="ButtonAccept" onClick={handleLogout}>
+                    {/* <button className="ButtonAccept" onClick={handleLogout}>
                         Cerrar Sesión
-                    </button>
+                    </button> */}
                 </header>
 
                 <div className="admin-grid">

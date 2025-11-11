@@ -1,0 +1,25 @@
+spring:
+  application:
+    name: BackendVictus
+  main:
+    web-application-type: reactive
+  r2dbc:
+    url: ${SPRING_R2DBC_URL:r2dbc:postgresql://switchback.proxy.rlwy.net:23578/railway?sslMode=require}
+    username: ${SPRING_R2DBC_USERNAME:postgres}
+    password: ${SPRING_R2DBC_PASSWORD:pTcDaULJAByAUYdErUvHgKIwjISJLEjU}
+    pool:
+      enabled: true
+      initial-size: 5
+      max-size: 20
+  data:
+    r2dbc:
+      repositories:
+        enabled: true
+  web:
+    resources:
+      add-mappings: false
+server:
+  port: 8080
+logging:
+  level:
+    org.springframework.r2dbc: DEBUG

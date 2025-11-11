@@ -1,30 +1,25 @@
 package co.edu.uco.backendvictus.infrastructure.secondary.mapper;
 
 import org.mapstruct.Mapper;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.mapstruct.Mapping;
 
+import co.edu.uco.backendvictus.crosscutting.helpers.ObjectHelper;
+import co.edu.uco.backendvictus.crosscutting.helpers.TextHelper;
 import co.edu.uco.backendvictus.domain.model.Departamento;
 import co.edu.uco.backendvictus.domain.model.Pais;
-import co.edu.uco.backendvictus.infrastructure.secondary.entity.DepartamentoJpaEntity;
-import co.edu.uco.backendvictus.infrastructure.secondary.entity.PaisJpaEntity;
+import co.edu.uco.backendvictus.infrastructure.secondary.entity.DepartamentoEntity;
 
-@Mapper(componentModel = "spring", uses = PaisEntityMapper.class)
-public abstract class DepartamentoEntityMapper {
+@Mapper(componentModel = "spring", imports = TextHelper.class)
+public interface DepartamentoEntityMapper {
 
-    @Autowired
-    private PaisEntityMapper paisEntityMapper;
+    @Mapping(target = "paisId", source = "pais.id")
+    @Mapping(target = "nombre", expression = "java(TextHelper.applyTrim(departamento.getNombre()))")
+    DepartamentoEntity toEntity(Departamento departamento);
 
-    public abstract DepartamentoJpaEntity toEntity(Departamento departamento);
-
-    protected PaisJpaEntity map(final Pais pais) {
-        return paisEntityMapper.toEntity(pais);
-    }
-
-    public Departamento toDomain(final DepartamentoJpaEntity entity) {
-        if (entity == null) {
+    default Departamento toDomain(final DepartamentoEntity entity, final Pais pais) {
+        if (ObjectHelper.isNull(entity) || ObjectHelper.isNull(pais)) {
             return null;
         }
-        final Pais pais = paisEntityMapper.toDomain(entity.getPais());
         return Departamento.create(entity.getId(), entity.getNombre(), pais, entity.isActivo());
     }
 }

@@ -2,5 +2,13 @@ package co.edu.uco.backendvictus.application.dto.departamento;
 
 import java.util.UUID;
 
-public record DepartamentoCreateRequest(UUID paisId, String nombre, boolean activo) {
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
+
+public record DepartamentoCreateRequest(
+        @NotNull(message = "El pais es obligatorio") UUID paisId,
+        @NotBlank(message = "El nombre del departamento es obligatorio")
+        @Size(max = 120, message = "El nombre del departamento no puede superar 120 caracteres") String nombre,
+        boolean activo) {
 }
